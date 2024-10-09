@@ -1,20 +1,27 @@
-"use client";
+import React from "react";
+import * as RadixButton from "@radix-ui/react-primitive";
 
-import { ReactNode } from "react";
-
-interface ButtonProps {
-  children: ReactNode;
-  className?: string;
-  appName: string;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary";
 }
 
-export const Button = ({ children, className, appName }: ButtonProps) => {
-  return (
-    <button
-      className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
-    >
-      {children}
-    </button>
-  );
-};
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, variant = "primary", ...props }, forwardedRef) => {
+    return (
+      <RadixButton.Primitive.button
+        {...props}
+        ref={forwardedRef}
+        className={`px-4 py-2 rounded ${
+          variant === "primary"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 text-black"
+        }`}
+      >
+        {children}
+      </RadixButton.Primitive.button>
+    );
+  }
+);
+
+Button.displayName = "Button";
